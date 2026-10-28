@@ -1,5 +1,12 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Chinese herbs and everyday foods explained in plain English: what Traditional Chinese Medicine says, what science shows, and how each ingredient is eaten. In English, Chinese and French.">
+<meta name="theme-color" content="#eef1e8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%238f2b26'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='serif'%3E%E8%8D%AF%3C/text%3E%3C/svg%3E">
 <title>Chinese Food & Herb Encyclopedia</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -359,8 +366,29 @@ html[lang="zh-Hans"] .label,html[lang="zh-Hans"] .pin,html[lang="zh-Hans"] .card
 .about-q summary::-webkit-details-marker{display:none}
 .about-q summary::after{content:"＋";font-weight:400}
 .about-q details[open] summary::after{content:"－"}
+@media (max-width:640px){
+.top{gap:6px 0!important;padding:8px 54px 8px 10px!important;border-radius:16px}
+.top .bar{width:100%;justify-content:flex-start}
+.brand{font-size:14.5px;gap:8px;line-height:1.2}
+.topnav{order:2;width:100%;flex-wrap:nowrap!important;justify-content:flex-start!important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-right:-44px;padding-right:24px;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+.topnav::-webkit-scrollbar{display:none}
+.topnav a{flex:0 0 auto;white-space:nowrap;padding:6px 11px!important;font-size:13.5px!important}
+.langmenu{top:calc(env(safe-area-inset-top,0px) + 16px)!important;right:max(20px,env(safe-area-inset-right))!important}
+.langbtn{width:36px!important;height:36px!important}
+.opts{display:flex!important;flex-wrap:wrap;gap:4px}
+.opts label{flex:1 1 auto}
+.opts span{font-family:var(--display);font-size:11.5px!important;padding:10px 4px!important;white-space:nowrap}
+}
+@media (max-width:400px){.opts{gap:3px}.opts span{font-size:11px!important;padding:10px 2px!important;letter-spacing:-.01em}
+.scale{gap:4px}
+.scale div{padding:10px 2px}
+.scale .han{font-size:18px}
+.scale small{font-family:var(--display);font-size:10px;line-height:1.25}
+}
 </style>
 
+</head>
+<body>
 <div id="bg" aria-hidden="true"><div class="bgimg"></div><div class="bgimg"></div></div>
 <div class="wrap">
   <header class="top">
@@ -2367,7 +2395,7 @@ function route(){
   else if(isType) renderType(id.slice(5)); else if(id==="quiz") renderQuiz(); else if(id==="result") renderResult(); else if(id==="types") renderTypes();
   else if(id==="home") renderHome(); else renderList(id);
   let sec=id; while(!["home","quiz","feelings","herbs","ideas"].includes(sec)) sec=parentOf(sec);
-  document.querySelectorAll(".topnav a").forEach(a=>{if(a.dataset.sec===sec)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  document.querySelectorAll(".topnav a").forEach(a=>{if(a.dataset.sec===sec)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});{const nv=document.querySelector(".topnav"),ac=nv&&nv.querySelector("[aria-current]");if(nv&&ac&&nv.scrollWidth>nv.clientWidth)nv.scrollLeft=ac.offsetLeft-(nv.clientWidth-ac.offsetWidth)/2;}
   const b=app.querySelector("[data-back]"); if(b) b.addEventListener("click",goBack);
   setBg(id);
   window.scrollTo(0,0);
@@ -2376,3 +2404,6 @@ applyLang();
 window.addEventListener("hashchange",route);
 route();
 </script>
+
+</body>
+</html>
