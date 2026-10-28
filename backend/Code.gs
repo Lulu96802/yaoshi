@@ -12,7 +12,9 @@
 const ITEMS = [
   'ginger_date_tea', 'chrysanthemum_goji_tea', 'monk_fruit_cooler', 'hawthorn_peel_tea',
   'date_longan_tea', 'barley_water', 'mung_bean_soup', 'white_fungus_pear',
-  'red_bean_coix', 'black_sesame_soup', 'lotus_lily_soup', 'mango_sago'
+  'red_bean_coix', 'black_sesame_soup', 'lotus_lily_soup', 'mango_sago',
+  'pumpkin_pancake', 'yam_pancake', 'red_bean_pancake', 'walnut_date_cookie', 'black_sesame_cookie',
+  'goji_oat_cookie', 'poria_wafer', 'hawthorn_cake', 'mung_bean_cake', 'osmanthus_cake', 'date_steamed_cake'
 ];
 const EVENT_HEADERS = ['Time', 'Event', 'Visitor ID', 'Session ID', 'Language', 'Page', 'Device', 'Came from', 'Body type', 'Detail'];
 const RESPONSE_HEADERS = ['Time', 'Visitor ID', 'Language', 'Would try?', 'Items chosen', 'Something else', 'Email', 'Body type', 'Device'];
