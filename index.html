@@ -346,16 +346,16 @@ body::before{background:linear-gradient(to bottom,color-mix(in srgb,var(--paper)
 .card{background:var(--glass);border-color:var(--glass-edge);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2)}
 .card .thumb{border-bottom-color:var(--glass-edge)}
 .card .where{color:color-mix(in srgb,var(--ink) 72%,transparent)}
-.langmenu{position:fixed;top:calc(env(safe-area-inset-top,0px) + 20px);right:max(18px,env(safe-area-inset-right));z-index:60}
+.langmenu{position:absolute;top:50%;right:-58px;transform:translateY(-50%);z-index:60}
 .langbtn{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;cursor:pointer;color:var(--ink);background:color-mix(in srgb,var(--surface) 46%,transparent);-webkit-backdrop-filter:blur(20px) saturate(1.3);backdrop-filter:blur(20px) saturate(1.3);border:1px solid var(--glass-edge);box-shadow:0 6px 24px rgba(0,0,0,.08);transition:transform .15s}
 .langbtn:hover,.langbtn[aria-expanded="true"]{color:var(--accent);transform:rotate(-12deg)}
-.langsw{position:absolute;right:0;top:50px;min-width:150px;display:flex;flex-direction:column;gap:2px;padding:6px;border-radius:14px;background:color-mix(in srgb,var(--surface) 78%,transparent);-webkit-backdrop-filter:blur(20px) saturate(1.3);backdrop-filter:blur(20px) saturate(1.3);border:1px solid var(--glass-edge);box-shadow:0 10px 30px rgba(0,0,0,.14)}
+.langsw{position:absolute;right:0;top:50px;min-width:150px;display:flex;flex-direction:column;gap:2px;padding:6px;border-radius:14px;background:var(--surface);border:1px solid var(--glass-edge);box-shadow:0 10px 30px rgba(0,0,0,.16)}
 .langsw[hidden]{display:none}
 .langsw button{display:flex;align-items:center;justify-content:space-between;gap:12px;border:0;background:transparent;font-family:var(--display);font-size:14px;font-weight:500;padding:8px 12px;border-radius:9px;cursor:pointer;color:var(--ink);text-align:left}
 .langsw button:hover{background:color-mix(in srgb,var(--ink) 7%,transparent)}
 .langsw button[aria-pressed="true"]{color:var(--accent)}
 .langsw button[aria-pressed="true"]::after{content:"✓";font-weight:600}
-@media (max-width:1080px){.top{padding-right:58px!important}.langmenu{top:calc(env(safe-area-inset-top,0px) + 17px);right:max(22px,env(safe-area-inset-right))}.langbtn{width:38px;height:38px}}
+@media (max-width:1080px){.top{padding-right:56px!important}.langmenu{right:9px;top:10px;transform:none}.langbtn{width:38px;height:38px;box-shadow:none;background:color-mix(in srgb,var(--surface) 60%,transparent)}}
 
 .topnav{order:2}
 
@@ -373,8 +373,8 @@ html[lang="zh-Hans"] .label,html[lang="zh-Hans"] .pin,html[lang="zh-Hans"] .card
 .topnav{order:2;width:100%;flex-wrap:nowrap!important;justify-content:flex-start!important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-right:-44px;padding-right:24px;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
 .topnav::-webkit-scrollbar{display:none}
 .topnav a{flex:0 0 auto;white-space:nowrap;padding:6px 11px!important;font-size:13.5px!important}
-.langmenu{top:calc(env(safe-area-inset-top,0px) + 16px)!important;right:max(20px,env(safe-area-inset-right))!important}
-.langbtn{width:36px!important;height:36px!important}
+.langmenu{top:8px;right:8px;transform:none}
+.langbtn{width:34px!important;height:34px!important}
 .opts{display:flex!important;flex-wrap:wrap;gap:4px}
 .opts label{flex:1 1 auto}
 .opts span{font-family:var(--display);font-size:11.5px!important;padding:10px 4px!important;white-space:nowrap}
@@ -424,14 +424,14 @@ html[lang="zh-Hans"] .label,html[lang="zh-Hans"] .pin,html[lang="zh-Hans"] .card
       <a href="#herbs" data-sec="herbs">Ingredients</a>
       <a href="#ideas" data-sec="ideas">Key ideas</a>
     </nav>
+  <div class="langmenu">
+      <button class="langbtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Language / 语言 / Langue" title="Language / 语言 / Langue"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9M12 3C9.4 5.6 8.1 8.6 8.1 12s1.3 6.4 3.9 9"/></svg></button>
+      <div class="langsw" role="group" aria-label="Language" hidden>
+        <button data-lang="en" aria-pressed="true"><span>English</span></button><button data-lang="zh" aria-pressed="false"><span>中文</span></button><button data-lang="fr" aria-pressed="false"><span>Français</span></button>
+      </div>
+    </div>
   </header>
   <main id="app"></main>
-  <div class="langmenu">
-    <button class="langbtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Language / 语言 / Langue" title="Language / 语言 / Langue"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9M12 3C9.4 5.6 8.1 8.6 8.1 12s1.3 6.4 3.9 9"/></svg></button>
-    <div class="langsw" role="group" aria-label="Language" hidden>
-      <button data-lang="en" aria-pressed="true"><span>English</span></button><button data-lang="zh" aria-pressed="false"><span>中文</span></button><button data-lang="fr" aria-pressed="false"><span>Français</span></button>
-    </div>
-  </div>
 
   <footer class="foot">
     <div data-i18n="foot1">For learning about Chinese herbs, food and culture. The "How are you feeling?" pages describe traditional food choices, not diagnosis or treatment. They do not replace a doctor or pharmacist.</div>
