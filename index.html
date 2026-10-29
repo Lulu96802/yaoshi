@@ -2428,16 +2428,17 @@ function bgShow(url){
   img.src=url;
 }
 function bgOn(){return true}
+let bgStarted=false;
 function setBg(id){
-  if(bgTimer){clearInterval(bgTimer);bgTimer=null}
-  if(!bgOn()) return;
+  /* One background for the whole visit: it keeps its photo when you change pages and moves on every 25 seconds. */
+  if(bgStarted||!bgOn()) return;
   const pool=bgPool(); if(!pool.length) return;
-  const own=PHOTOS[id]&&(PHOTOS[id][0]||PHOTOS[id][1]);
-  if(own){bgShow(own.img);return}
-  const pick=()=>pool[Math.floor(Math.random()*pool.length)];
+  bgStarted=true;
+  let last="";
+  const pick=()=>{let u;do{u=pool[Math.floor(Math.random()*pool.length)]}while(pool.length>1&&u===last);last=u;return u};
   bgShow(pick());
   let reduce=false; try{reduce=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
-  if(id==="home"&&!reduce) bgTimer=setInterval(()=>bgShow(pick()),25000);
+  if(!reduce) bgTimer=setInterval(()=>bgShow(pick()),25000);
 }
 const SECTIONS={home:"Home",quiz:"Body type quiz",feelings:"How you feel",herbs:"Ingredients",ideas:"Key ideas",types:"The nine body types",result:"Your result"};
 let stack=[];
