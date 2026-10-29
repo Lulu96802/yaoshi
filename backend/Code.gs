@@ -18,6 +18,14 @@ const ITEMS = [
 ];
 const ITEM_IDS = ITEMS.map(i => i[0]);
 const EVENT_HEADERS = ['Time', 'Event', 'Visitor ID', 'Session ID', 'Language', 'Page', 'Device', 'Came from', 'Body type', 'Detail'];
+const TYPES = [
+  ['qixu', 'Low-energy type (气虚质)'], ['yangxu', 'Cold type (阳虚质)'], ['yinxu', 'Dry and warm type (阴虚质)'],
+  ['tanshi', 'Heavy and damp type (痰湿质)'], ['shire', 'Damp and hot type (湿热质)'], ['xueyu', 'Sluggish circulation type (血瘀质)'],
+  ['qiyu', 'Stressed type (气郁质)'], ['tebing', 'Sensitive type (特禀质)'], ['pinghe', 'Balanced type (平和质)']
+];
+const TYPE_IDS = TYPES.map(t => t[0]);
+const QUIZ_HEADERS = ['Time', 'Visitor ID', 'Language', 'Device', 'Main type', 'Also leaning towards']
+  .concat(TYPES.map(t => t[1] + ' score'), ['Answers Q1–Q36 (0 never … 4 always)']);
 const RESPONSE_HEADERS = ['Time', 'Visitor ID', 'Language', 'Would try?', 'Items chosen', 'Something else', 'Email', 'Body type', 'Device'];
 
 function doPost(e) {
@@ -38,6 +46,17 @@ function doPost(e) {
       new Date(), ev, clean(d.vid, 20), clean(d.sid, 20), clean(d.lang, 5), clean(d.page, 60),
       clean(d.device, 10), clean(d.ref, 200), clean(d.bodytype, 12), detail
     ]);
+    if (ev === 'quiz_complete') {
+      const sc = d.scores && typeof d.scores === 'object' ? d.scores : {};
+      const lean = Array.isArray(d.lean) ? d.lean.filter(k => TYPE_IDS.includes(k)) : [];
+      const label = id => (TYPES.find(t => t[0] === id) || [id, id])[1];
+      ss.getSheetByName('Quiz results').appendRow(
+        [new Date(), clean(d.vid, 20), clean(d.lang, 5), clean(d.device, 10),
+         TYPE_IDS.includes(d.detail) ? label(d.detail) : '', lean.map(label).join(', ')]
+          .concat(TYPE_IDS.map(k => { const n = Number(sc[k]); return isFinite(n) ? Math.max(0, Math.min(100, Math.round(n))) : ''; }),
+                  [clean(String(d.answers || '').replace(/[^0-4-]/g, ''), 60)])
+      );
+    }
     if (ev === 'survey_submit') {
       ss.getSheetByName('Responses').appendRow([
         new Date(), clean(d.vid, 20), clean(d.lang, 5), clean(d.q1, 10), items.join(', '),
@@ -75,6 +94,7 @@ function setup() {
   };
   make('Events', EVENT_HEADERS);
   make('Responses', RESPONSE_HEADERS);
+  make('Quiz results', QUIZ_HEADERS);
   const sum = make('Summary');
   sum.clear();
   const rows = [
@@ -100,9 +120,22 @@ function setup() {
     ['What people want to try', 'Votes']
   ];
   ITEMS.forEach(([id, label]) => rows.push([label, '=COUNTIF(Responses!E:E,"*' + id + '*")']));
+  rows.push(['', ''], ['Body type quiz', ''], ['Quizzes recorded', "=COUNTA('Quiz results'!A2:A)"]);
+  const typeStart = rows.length + 2;
+  rows.push(['Body type', 'People with this as main type']);
+  TYPES.forEach(([id, label], i) => {
+    rows.push([label, "=COUNTIF('Quiz results'!E:E,\"" + label + "\")"]);
+  });
+  rows.push(['', ''], ['Average score by type (0–100)', 'Average']);
+  const avgStart = rows.length;
+  TYPES.forEach(([id, label], i) => {
+    const col = String.fromCharCode(71 + i); // G..O
+    rows.push([label, "=IFERROR(ROUND(AVERAGE('Quiz results'!" + col + "2:" + col + "),0),\"\")"]);
+  });
   sum.getRange(1, 1, rows.length, 2).setValues(rows);
   sum.getRange('A1').setFontSize(14).setFontWeight('bold');
   ['A3', 'A10', 'A20', 'B20'].forEach(a => sum.getRange(a).setFontWeight('bold'));
+  rows.forEach((r, i) => { if (['Body type quiz', 'Body type', 'Average score by type (0–100)'].includes(r[0])) sum.getRange(i + 1, 1, 1, 2).setFontWeight('bold'); });
   sum.getRange('B12').setNumberFormat('0.0%');
   sum.getRange('B17').setNumberFormat('0.0%');
   sum.setColumnWidth(1, 260);
