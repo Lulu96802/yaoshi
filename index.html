@@ -2560,7 +2560,9 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!fbPanel.hidden)fbO
 document.addEventListener("click",e=>{if(!fbPanel.hidden&&e.target.isConnected&&!e.target.closest(".fb"))fbOpen(false)});
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest(".langsw button"))setTimeout(()=>{fbLabels();if(!fbPanel.hidden&&fbStep!=="items")fbDraw()},0)});
 fbLabels();
-if(!store("l","yfbdone")){setTimeout(()=>{fb.hidden=false;if(!store("l","yfbhint")){store("l","yfbhint","1");fb.classList.add("hint");setTimeout(()=>fb.classList.remove("hint"),4000)}},6000)}
+const fbForce=/[?&]survey\b/.test(location.search);
+if(fbForce){try{localStorage.removeItem("yfbdone");localStorage.removeItem("yfbhint")}catch(e){}}
+if(!store("l","yfbdone")){setTimeout(()=>{fb.hidden=false;if(!store("l","yfbhint")){store("l","yfbhint","1");fb.classList.add("hint");setTimeout(()=>fb.classList.remove("hint"),4000)}},fbForce?300:3000)}
 </script>
 
 </body>
