@@ -2437,7 +2437,7 @@ function setBg(id){
   const pick=()=>pool[Math.floor(Math.random()*pool.length)];
   bgShow(pick());
   let reduce=false; try{reduce=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
-  if(id==="home"&&!reduce) bgTimer=setInterval(()=>bgShow(pick()),14000);
+  if(id==="home"&&!reduce) bgTimer=setInterval(()=>bgShow(pick()),25000);
 }
 const SECTIONS={home:"Home",quiz:"Body type quiz",feelings:"How you feel",herbs:"Ingredients",ideas:"Key ideas",types:"The nine body types",result:"Your result"};
 let stack=[];
