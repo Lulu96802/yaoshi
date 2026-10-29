@@ -10,12 +10,13 @@
  */
 
 const ITEMS = [
-  'ginger_date_tea', 'chrysanthemum_goji_tea', 'monk_fruit_cooler', 'hawthorn_peel_tea',
-  'date_longan_tea', 'barley_water', 'mung_bean_soup', 'white_fungus_pear',
-  'red_bean_coix', 'black_sesame_soup', 'lotus_lily_soup', 'mango_sago',
-  'pumpkin_pancake', 'yam_pancake', 'red_bean_pancake', 'walnut_date_cookie', 'black_sesame_cookie',
-  'goji_oat_cookie', 'poria_wafer', 'hawthorn_cake', 'mung_bean_cake', 'osmanthus_cake', 'date_steamed_cake'
+  ['grain_paste', 'Breakfast grain pastes (e.g. 黑芝麻糊)'],
+  ['flower_tea', 'Herbal and flower teas'],
+  ['herbal_drink', 'Ready-to-drink herbal drinks'],
+  ['sweet_soup', 'Sweet soups (糖水)'],
+  ['pastry', 'Pancakes, cakes and cookies']
 ];
+const ITEM_IDS = ITEMS.map(i => i[0]);
 const EVENT_HEADERS = ['Time', 'Event', 'Visitor ID', 'Session ID', 'Language', 'Page', 'Device', 'Came from', 'Body type', 'Detail'];
 const RESPONSE_HEADERS = ['Time', 'Visitor ID', 'Language', 'Would try?', 'Items chosen', 'Something else', 'Email', 'Body type', 'Device'];
 
@@ -29,7 +30,7 @@ function doPost(e) {
     if (!['visit', 'quiz_complete', 'survey_open', 'survey_answer', 'survey_submit'].includes(ev)) {
       return ContentService.createTextOutput('ignored');
     }
-    const items = Array.isArray(d.items) ? d.items.filter(i => ITEMS.includes(i)) : [];
+    const items = Array.isArray(d.items) ? d.items.filter(i => ITEM_IDS.includes(i)) : [];
     const detail = ev === 'survey_answer' ? clean(d.q1, 10)
                  : ev === 'survey_submit' ? clean(d.q1, 10) + (items.length ? ': ' + items.join(', ') : '')
                  : clean(d.detail, 40);
@@ -96,9 +97,9 @@ function setup() {
     ['Interested share (yes + maybe)', '=IFERROR((B14+B15)/B13,0)'],
     ['Emails collected', '=COUNTIF(Responses!G2:G,"?*")'],
     ['', ''],
-    ['Items chosen', 'Times picked']
+    ['What people want to try', 'Votes']
   ];
-  ITEMS.forEach(id => rows.push([id, '=COUNTIF(Responses!E:E,"*' + id + '*")']));
+  ITEMS.forEach(([id, label]) => rows.push([label, '=COUNTIF(Responses!E:E,"*' + id + '*")']));
   sum.getRange(1, 1, rows.length, 2).setValues(rows);
   sum.getRange('A1').setFontSize(14).setFontWeight('bold');
   ['A3', 'A10', 'A20', 'B20'].forEach(a => sum.getRange(a).setFontWeight('bold'));
