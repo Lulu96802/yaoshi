@@ -35,7 +35,7 @@ function doPost(e) {
     const d = JSON.parse(e.postData.contents || '{}');
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const ev = clean(d.ev, 30);
-    if (!['visit', 'quiz_complete', 'survey_open', 'survey_answer', 'survey_submit'].includes(ev)) {
+    if (!['visit', 'quiz_complete', 'survey_open', 'survey_answer', 'survey_submit', 'card_save'].includes(ev)) {
       return ContentService.createTextOutput('ignored');
     }
     const items = Array.isArray(d.items) ? d.items.filter(i => ITEM_IDS.includes(i)) : [];
@@ -106,6 +106,7 @@ function setup() {
     ['Visits from phones', '=COUNTIFS(Events!B:B,"visit",Events!G:G,"phone")'],
     ['Visits in English / 中文 / Français', '=COUNTIFS(Events!B:B,"visit",Events!E:E,"en")&" / "&COUNTIFS(Events!B:B,"visit",Events!E:E,"zh")&" / "&COUNTIFS(Events!B:B,"visit",Events!E:E,"fr")'],
     ['Body type quizzes finished', '=COUNTIF(Events!B:B,"quiz_complete")'],
+    ['Character cards saved', '=COUNTIF(Events!B:B,"card_save")'],
     ['', ''],
     ['Survey', ''],
     ['Survey opened', '=COUNTIF(Events!B:B,"survey_open")'],
